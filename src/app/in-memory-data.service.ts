@@ -18,23 +18,97 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 1,
         name: 'Ad Group 1',
         items: [
-          'Computers',
-          'Mobile phones',
-          'Tablets',
+          {
+            id: 1,
+            name: 'Computers',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
+          {
+            id: 2,
+            name: 'Mobile phones',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
+          {
+            id: 3,
+            name: 'Tablets',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
         ],
         status: 'Eligible',
         maxCpc: 100.00,
+        clicks: 0,
+        impressions: 0,
+        ctr: 0,
+        avgCpc: 0,
+        cost: 0,
+        conversions: 0,
+        costClick: 0
       },
       {
         id: 2,
         name: 'Changi Airport',
         items: [
-          'Computers',
-          'Mobile phones',
-          'Tablets',
+          {
+            id: 1,
+            name: 'Computers',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
+          {
+            id: 2,
+            name: 'Mobile phones',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
+          {
+            id: 3,
+            name: 'Tablets',
+            clicks: 0,
+            impressions: 0,
+            ctr: 0,
+            avgCpc: 0,
+            cost: 0,
+            conversions: 0,
+            costClick: 0
+          },
         ],
         status: 'Paused',
         maxCpc: 2.30,
+        clicks: 0,
+        impressions: 0,
+        ctr: 0,
+        avgCpc: 0,
+        cost: 0,
+        conversions: 0,
+        costClick: 0
       },
     ];
 
@@ -46,5 +120,5 @@ export class InMemoryDataService implements InMemoryDbService {
   genId(rows: DataRow[]): number {
     return rows.length > 0 ? Math.max(...rows.map(row => row.id)) + 1 : 1;
   }
-  
+
 }

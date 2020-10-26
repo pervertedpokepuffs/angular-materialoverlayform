@@ -1,0 +1,29 @@
+<div>
+    <span class="oi" data-glyph="pencil" cdkOverlayOrigin #originOverlay="cdkOverlayOrigin"
+        (click)="onIconClick()"></span>
+</div>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="originOverlay"
+    [cdkConnectedOverlayOpen]="isOpen.getValue()" [cdkConnectedOverlayPositions]="positions">
+    <mat-card>
+        <div>
+            <form [formGroup]="maxCpcForm" (ngSubmit)="onSubmit(maxCpcForm.value)">
+                <mat-form-field appearance="standard">
+                    <mat-label>Max. CPC</mat-label>
+                    <span matPrefix>MYR &nbsp;</span>
+                    <input matInput formControlName="maxCpcField" (change)="onChange()">
+                </mat-form-field>
+                <div class="submit-group">
+                    <ng-container *ngIf="!spinnerState.getValue(); else spinner">
+                        <button mat-button color="primary" (click)="onCancelClick()">CANCEL</button>
+                        <button mat-button color="primary" type="submit">SAVE</button>
+                    </ng-container>
+                    <ng-template #spinner>
+                        <mat-spinner diameter="35"></mat-spinner>
+                    </ng-template>
+                </div>
+                
+            </form>
+        </div>
+    </mat-card>
+</ng-template>

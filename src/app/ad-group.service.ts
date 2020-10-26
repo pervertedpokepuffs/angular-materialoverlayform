@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LogService } from './log.service';
 import { DataRow } from './data-row';
@@ -11,45 +11,53 @@ import { DataRow } from './data-row';
 })
 export class AdGroupService {
   private adGroupUrl = 'api/rows';
-  rowChanged: Subject<boolean>;
-
-  httpOptions = {
+  private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+
+  rows: ReplaySubject<DataRow[]>;
 
   constructor(
     private http: HttpClient,
     private logService: LogService
   ) {
-    this.rowChanged = new Subject<boolean>();
+    this.rows = new ReplaySubject();
+    this.http.get(this.adGroupUrl).pipe(
+      tap(() => this.logMessage('fetched rows')),
+      catchError(this.handleError<DataRow[]>('get rows'))
+    ).subscribe((data: DataRow[]) => this.rows.next(data));
   }
 
-  async getRows(): Promise<any> {
-    return this.http.get(this.adGroupUrl).pipe(
-      tap(_ => this.logMessage('fetched data-rows')),
+  getRows(): Observable<DataRow[]> {
+    this.http.get(this.adGroupUrl).pipe(
+      tap(() => this.logMessage('fetched rows')),
       catchError(this.handleError<DataRow[]>('get rows'))
-    ).toPromise();
+    ).subscribe((data: DataRow[]) => this.rows.next(data));
+    return this.rows.asObservable();
   }
 
   updateRow(data: DataRow): Observable<any> {
-    this.logService.log('updating row');
-    this.logService.log(data);
+    this.logMessage('updating row');
+    this.logMessage(data);
     return this.http.put(this.adGroupUrl, data, this.httpOptions).pipe(
-      tap(_ => this.logMessage(`updated row id=${data.id}`),
+      tap(_ => {
+        this.logMessage(`updated row id=${data.id}`);
+        this.getRows();
+      },
       catchError(this.handleError<any>('updateRow')))
     );
   }
 
   private handleError<T>(operation: string = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      this.logService.log(`failed to ${operation}`);
-      this.logService.log(error);
+      this.logMessage(`failed to ${operation}`);
+      this.logMessage(error);
       return of(result as T);
     };
   }
 
-  private logMessage(message: string) {
-    this.logService.log(`AdGroupService: ${message}`);
+  private logMessage(message: any) {
+    this.logService.log(message, 'ad-group.service');
   }
 
 }

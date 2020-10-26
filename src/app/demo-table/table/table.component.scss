@@ -1,0 +1,32 @@
+.subTableCell {
+    div {
+        flex-grow: 1;
+    }
+
+    * {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+.maxcpc-cell {
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        max-width: 40%;
+    }
+}
+
+.cell-overlay {
+    :hover > &-icon {
+        visibility: visible;
+    }
+
+    &-icon {
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,81 @@
+<mat-table [dataSource]="rows" multiTemplateDataRows>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.status}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="maxCpc">
+        <mat-header-cell *matHeaderCellDef>Default Max. CPC</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="maxcpc-cell">
+            <div class="cell-overlay">
+                <div>
+                    MYR{{element.maxCpc.toFixed(2)}}
+                </div>
+                <div class="cell-overlay-icon">
+                    <app-overlay-form [row]="element"></app-overlay-form>
+                </div>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="clicks">
+        <mat-header-cell *matHeaderCellDef>Clicks</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.clicks}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="impressions">
+        <mat-header-cell *matHeaderCellDef>Impressions</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.impressions}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ctr">
+        <mat-header-cell *matHeaderCellDef>CTR</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.ctr}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="avgCpc">
+        <mat-header-cell *matHeaderCellDef>Avg. CPC</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.avgCpc}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cost">
+        <mat-header-cell *matHeaderCellDef>Cost</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.cost}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="conversions">
+        <mat-header-cell *matHeaderCellDef>Conversions</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.conversions}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="costClick">
+        <mat-header-cell *matHeaderCellDef>Cost/Click</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.costClick}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="itemsTable">
+        <mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" class="subTableCell">
+            <div>
+                <mat-table #itemTable [dataSource]="element.items">
+
+                    <ng-container matColumnDef="item-{{column}}" *ngFor="let column of displayedColumns">
+                        <mat-cell *matCellDef="let element">{{element[column]}}</mat-cell>
+                    </ng-container>
+                    <mat-row *matRowDef="let row; columns: itemsDisplayedColumns"></mat-row>
+
+                </mat-table>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['itemsTable']"></mat-row>
+
+</mat-table>
